@@ -79,4 +79,18 @@ export const GlobalStyle = createGlobalStyle`
     position: relative;
     border-radius: 0.25rem;
   }
+
+  .react-modal-close {
+    position: absolute;
+    right: 1.5rem;
+    top: 1.5rem;
+    border: 0; // vem com bordar por padrão
+    background: transparent; // também vem com background por padrão
+
+    transition: filter 0.2s;
+
+    &:hover {
+      filter: brightness(0.8);
+    }
+  }
 `
