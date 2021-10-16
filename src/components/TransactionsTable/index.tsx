@@ -1,6 +1,16 @@
+import { useState } from "react";
 import { useEffect } from "react";
 import { api } from "../../services/api";
 import { Container } from "./styles";
+
+interface Transaction {
+    id: number;
+    title: string;
+    amount: number;
+    type: string;
+    category: string;
+    createdAt: string;
+}
 
 export function TransactionsTable() {
     /* Dica: sempre legal deixar o front-end conectado com alguma API mesmo que fictícia
@@ -8,9 +18,11 @@ export function TransactionsTable() {
     com dados vindos de uma API. 
     - O MirageJS ajuda a deixar nosso front semi pronto enquanto não tem back-end;
     */
+   const [transactions, setTransactions] = useState<Transaction[]>([]);
+
     useEffect(() => {
         api.get('transactions')
-            .then(response => console.log(response.data))
+            .then(response => setTransactions(response.data.transactions))
     }, []);
 
     return (
@@ -23,18 +35,16 @@ export function TransactionsTable() {
                     <th>Data</th>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Desenvolvimento de aplicativo</td>
-                        <td className="deposit">R$ 12.00</td>
-                        <td>Desenvolvimento pessoal</td>
-                        <td>22/09/2021</td>
-                    </tr>
-                    <tr>
-                        <td>Aluguel</td>
-                        <td className="withdraw">-R$ 1.100</td>
-                        <td>Casa</td>
-                        <td>17/02/2021</td>
-                    </tr>
+                    {transactions.map(transaction => {
+                     return (
+                         <tr key={transaction.id}>
+                             <td>{transaction.title}</td>
+                             <td className={transaction.type}>{transaction.amount}</td>
+                             <td>{transaction.category}</td>
+                             <td>{transaction.createdAt}</td>
+                         </tr>
+                     );   
+                    })}
                 </tbody>
             </table>
         </Container>
