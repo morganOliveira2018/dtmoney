@@ -18,7 +18,7 @@ export function TransactionsTable() {
     com dados vindos de uma API. 
     - O MirageJS ajuda a deixar nosso front semi pronto enquanto não tem back-end;
     */
-   const [transactions, setTransactions] = useState<Transaction[]>([]);
+    const [transactions, setTransactions] = useState<Transaction[]>([]);
 
     useEffect(() => {
         api.get('transactions')
@@ -36,14 +36,22 @@ export function TransactionsTable() {
                 </thead>
                 <tbody>
                     {transactions.map(transaction => {
-                     return (
-                         <tr key={transaction.id}>
-                             <td>{transaction.title}</td>
-                             <td className={transaction.type}>{transaction.amount}</td>
-                             <td>{transaction.category}</td>
-                             <td>{transaction.createdAt}</td>
-                         </tr>
-                     );   
+                        return (
+                            <tr key={transaction.id}>
+                                <td>{transaction.title}</td>
+                                <td className={transaction.type}>
+                                    {new Intl.NumberFormat('pt-BR', {
+                                        style: 'currency',
+                                        currency: 'BRL'
+                                    }).format(transaction.amount)}
+                                </td>
+                                <td>{transaction.category}</td>
+                                <td>{new Intl.DateTimeFormat('pt-BR').format(
+                                    new Date(transaction.createdAt)
+                                )}
+                                </td>
+                            </tr>
+                        );
                     })}
                 </tbody>
             </table>
