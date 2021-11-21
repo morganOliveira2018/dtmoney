@@ -28,7 +28,7 @@ interface TransactionProviderProps {
 
 interface TransactionContextData {
     transactions: Transaction[];
-    createTransaction: (transaction: TransactionType) => void;
+    createTransaction: (transaction: TransactionType) => Promise<void>;
 }
 
 export const TransactionsContext = createContext<TransactionContextData>(
@@ -43,8 +43,20 @@ export function TransactionsProvider({ children }: TransactionProviderProps) {
             .then(response => setTransactions(response.data.transactions))
     }, []);
 
-    function createTransaction(transaction: TransactionType) {
-        api.post('/transactions', transaction)
+    async function createTransaction(transactionInput: TransactionType) {
+        const response = await api.post('/transactions', {
+            ...transactionInput,
+            createdAt: new Date(),
+        })
+        const { transaction } = response.data;
+
+        // Isso é a conceito de imutabilidade: Toda vida que quero adicionar uma nova
+        // informação no vetor em um estado no react, eu sempre copio todas as informações (... transactions)
+        // que já estão lá dentro e adiciono a nova informação (transaction)
+        setTransactions([
+            ...transactions,
+            transaction
+        ]);
         
         /* console.log ({
           title,
