@@ -1,16 +1,6 @@
-import { useState } from "react";
-import { useEffect } from "react";
-import { api } from "../../services/api";
+import { useContext} from "react";
+import { TransactionsContext } from "../../TransactionsContext";
 import { Container } from "./styles";
-
-interface Transaction {
-    id: number;
-    title: string;
-    amount: number;
-    type: string;
-    category: string;
-    createdAt: string;
-}
 
 export function TransactionsTable() {
     /* Dica: sempre legal deixar o front-end conectado com alguma API mesmo que fictícia
@@ -18,12 +8,7 @@ export function TransactionsTable() {
     com dados vindos de uma API. 
     - O MirageJS ajuda a deixar nosso front semi pronto enquanto não tem back-end;
     */
-    const [transactions, setTransactions] = useState<Transaction[]>([]);
-
-    useEffect(() => {
-        api.get('transactions')
-            .then(response => setTransactions(response.data.transactions))
-    }, []);
+    const { transactions }  = useContext(TransactionsContext);
 
     return (
         <Container>
