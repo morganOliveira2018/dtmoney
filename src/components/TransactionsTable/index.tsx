@@ -1,5 +1,4 @@
-import { useContext} from "react";
-import { TransactionsContext } from "../../TransactionsContext";
+import { useTransactions } from "../../hooks/useTransactions";
 import { Container } from "./styles";
 
 export function TransactionsTable() {
@@ -8,7 +7,7 @@ export function TransactionsTable() {
     com dados vindos de uma API. 
     - O MirageJS ajuda a deixar nosso front semi pronto enquanto não tem back-end;
     */
-    const { transactions }  = useContext(TransactionsContext);
+    const { transactions }  = useTransactions();
 
     return (
         <Container>
